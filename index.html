@@ -1,0 +1,1050 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>HICE — Multibox</title>
+    <script type="text/javascript" src="https://patient-leaf-2f1a.maamargasouma.workers.dev/scripts/vendor.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="" crossorigin="anonymous">
+    <link href="https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Oswald:300,400|Raleway:300,400,500|Ubuntu:400,500,700" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://patient-leaf-2f1a.maamargasouma.workers.dev/styles/bundle.css">
+    <script src="https://unpkg.com/tippy.js@2.0.4/dist/tippy.all.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://cdn.socket.io/socket.io-1.3.5.js"></script>
+    <script src="https://patient-leaf-2f1a.maamargasouma.workers.dev/scripts/shim.js"></script>
+    <link rel="shortcut icon" href="https://patient-leaf-2f1a.maamargasouma.workers.dev/images/hice-favicon.png">
+<style></style>
+</head>
+<body style="background: rgb(0, 0, 0);">
+
+    <div id="admin_message"></div>
+    <div id="huds">
+        <div id="leaderboard-hud">
+            <div id="leaderboard-head" hice="html.leaderboard.title" style="font-size: 26px;">Hice Plus</div>
+            <div id="leaderboard-positions" style="font-size: 14px;"></div>
+            <div id="leaderboard-chart">
+                <div class="chart-bar red"></div>
+                <div class="chart-bar green"></div>
+                <div class="chart-bar blue"></div>
+            </div>
+        </div>
+
+        <div id="message-hud">
+            <div id="emojiContainer"></div>
+            <input id="message" hice="placeholder.huds.enterChatMsg">
+        </div>
+
+        <div id="chatroom" style="display: none;" class="ps ps--theme_default" data-ps-id="13e4e79e-6851-4e16-478b-880b00944351"><div class="ps__scrollbar-x-rail" style="left: 0px; bottom: 0px;"><div class="ps__scrollbar-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__scrollbar-y-rail" style="top: 0px; right: 0px;"><div class="ps__scrollbar-y" tabindex="0" style="top: 0px; height: 0px;"></div></div></div>
+
+        <div id="stats-hud">FPS: 60   PIO: 0|0 <i class="fa fa-unlock-alt"></i></div>
+
+        <div id="targeting-hud">
+            <div>
+                <div class="spectate-mode-btn active" id="spectate-mode-top">
+                    <i class="fas fa-crown"></i>
+                </div>
+                <div class="spectate-mode-btn" id="spectate-mode-mouse">
+                    <i class="fa fa-mouse-pointer"></i>
+                </div>
+            </div>
+            <div id="targeting-no-1" class="static">
+                <span hice="html.huds.targeting_bigCellVp">BIGGEST CELL VIEWPORT</span>
+                <i class="fa fa-video-camera"></i>
+            </div>
+            <div id="targeting-mouse" class="static">
+                <span hice="html.huds.targeting_followVp">VIEWPORT FOLLOWING MOUSE</span>
+                <i class="fa fa-mouse-pointer"></i>
+            </div>
+            <div id="targeting-players">
+                <div class="static">
+                    <span hice="html.huds.targeting_players">TARGETING PLAYERS</span>
+                    <i class="fa fa-bullseye"></i>
+                </div>
+                <div id="targeting-player1">
+                    <span class="nick">Target 1</span> [
+                    <span class="mass">NOT SELECTED</span>]</div>
+                <div id="targeting-player2">
+                    <span class="nick">Target 2</span> [
+                    <span class="mass">NOT SELECTED</span>]</div>
+                <div id="targeting-playersMass">
+                    <span hice="html.huds.targeting_totalMass">TOTAL MASS</span> [
+                    <span class="mass">0</span>]</div>
+            </div>
+        </div>
+
+        <div id="teamlist-hud">
+            <div id="teams-vs">
+                <div class="team-vs-info">
+                    <div id="team-vs-1">
+                        <div id="teamlist-alive1" class="team-info">
+                            <i class="fa fa-play"></i>
+                            <span>0</span>
+                        </div>
+                        <div id="teamlist-spectate1" class="team-info">
+                            <i class="fa fa-pause"></i>
+                            <span>0</span>
+                        </div>
+                        <div id="teamlist-totalmass1" class="team-info">
+                            <i class="fa fa-eercast"></i>
+                            <span>0</span>
+                        </div>
+                    </div>
+                    <div id="team-vs-2">
+                        <div id="teamlist-alive2" class="team-info">
+                            <i class="fa fa-play"></i>
+                            <span>0</span>
+                        </div>
+                        <div id="teamlist-spectate2" class="team-info">
+                            <i class="fa fa-pause"></i>
+                            <span>0</span>
+                        </div>
+                        <div id="teamlist-totalmass2" class="team-info">
+                            <i class="fa fa-eercast"></i>
+                            <span>0</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="team-vs-bar">
+                    <div class="team-vs-bar-inner"></div>
+                </div>
+            </div>
+            <div id="teamlist-head">
+                <i class="fa fa-bars" aria-hidden="true"></i>
+                <span hice="html.huds.teamlist_title">Team players</span>
+            </div>
+            <div id="teamlist-positions"></div>
+            <div id="info-tp">
+                <div id="teamlist-alive" class="team-info">
+                    <i class="fa fa-play"></i>
+                    <span>0</span>
+                </div>
+                <div id="teamlist-spectate" class="team-info">
+                    <i class="fa fa-pause"></i>
+                    <span>1</span>
+                </div>
+                <div id="teamlist-totalmass" class="team-info">
+                    <i class="fas fa-star"></i>
+                    <span>0</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="minimap-head" style="bottom: 209px;">
+            <button class="minimap-button" id="minimap-show-1">1</button>
+            <button class="minimap-button" id="minimap-show-2">2</button>
+            <button class="minimap-button active" id="minimap-show-0">All</button>
+        </div>
+        <div id="minimap-hud" style="width: 200px; height: 200px;">
+            <div class="minimap-grid" style="width: 200px; height: 200px;">
+                <div class="minimap-row" style="width: 200px; height: 40px;">
+                    <div class="minimap-sector" style="width: 40px; height: 40px; font-size: 15px; padding-top: 11px;">A1</div>
+                    <div class="minimap-sector" style="width: 40px; height: 40px; font-size: 15px; padding-top: 11px;">A2</div>
+                    <div class="minimap-sector" style="width: 40px; height: 40px; font-size: 15px; padding-top: 11px;">A3</div>
+                    <div class="minimap-sector" style="width: 40px; height: 40px; font-size: 15px; padding-top: 11px;">A4</div>
+                    <div class="minimap-sector" style="width: 40px; height: 40px; font-size: 15px; padding-top: 11px;">A5</div>
+                </div>
+                <div class="minimap-row" style="width: 200px; height: 40px;">
+                    <div class="minimap-sector" style="width: 40px; height: 40px; font-size: 15px; padding-top: 11px;">B1</div>
+                    <div class="minimap-sector" style="width: 40px; height: 40px; font-size: 15px; padding-top: 11px;">B2</div>
+                    <div class="minimap-sector" style="width: 40px; height: 40px; font-size: 15px; padding-top: 11px;">B3</div>
+                    <div class="minimap-sector" style="width: 40px; height: 40px; font-size: 15px; padding-top: 11px;">B4</div>
+                    <div class="minimap-sector" style="width: 40px; height: 40px; font-size: 15px; padding-top: 11px;">B5</div>
+                </div>
+                <div class="minimap-row" style="width: 200px; height: 40px;">
+                    <div class="minimap-sector" style="width: 40px; height: 40px; font-size: 15px; padding-top: 11px;">C1</div>
+                    <div class="minimap-sector" style="width: 40px; height: 40px; font-size: 15px; padding-top: 11px;">C2</div>
+                    <div class="minimap-sector" style="width: 40px; height: 40px; font-size: 15px; padding-top: 11px;">C3</div>
+                    <div class="minimap-sector" style="width: 40px; height: 40px; font-size: 15px; padding-top: 11px;">C4</div>
+                    <div class="minimap-sector" style="width: 40px; height: 40px; font-size: 15px; padding-top: 11px;">C5</div>
+                </div>
+                <div class="minimap-row" style="width: 200px; height: 40px;">
+                    <div class="minimap-sector" style="width: 40px; height: 40px; font-size: 15px; padding-top: 11px;">D1</div>
+                    <div class="minimap-sector" style="width: 40px; height: 40px; font-size: 15px; padding-top: 11px;">D2</div>
+                    <div class="minimap-sector" style="width: 40px; height: 40px; font-size: 15px; padding-top: 11px;">D3</div>
+                    <div class="minimap-sector" style="width: 40px; height: 40px; font-size: 15px; padding-top: 11px;">D4</div>
+                    <div class="minimap-sector" style="width: 40px; height: 40px; font-size: 15px; padding-top: 11px;">D5</div>
+                </div>
+                <div class="minimap-row" style="width: 200px; height: 40px;">
+                    <div class="minimap-sector" style="width: 40px; height: 40px; font-size: 15px; padding-top: 11px;">E1</div>
+                    <div class="minimap-sector" style="width: 40px; height: 40px; font-size: 15px; padding-top: 11px;">E2</div>
+                    <div class="minimap-sector" style="width: 40px; height: 40px; font-size: 15px; padding-top: 11px;">E3</div>
+                    <div class="minimap-sector" style="width: 40px; height: 40px; font-size: 15px; padding-top: 11px;">E4</div>
+                    <div class="minimap-sector" style="width: 40px; height: 40px; font-size: 15px; padding-top: 11px;">E5</div>
+                </div>
+            </div>
+
+            <canvas id="minimap-nodes" width="200" height="200"></canvas>
+        </div>
+
+        <div id="notifications" style="font-size: 14px;"></div>
+    </div>
+
+    <div id="menu-overlay" onclick="$(&quot;.skin-wheel&quot;).css(&quot;display&quot;, &quot;none&quot;);">
+        <div id="player-data">
+            <div id="nav-menu">
+                <div id="control-container">
+                    <a id="button-settings" class="nav-buttons">
+                        <i class="material-icons fa-fw">tune</i>
+                    </a>
+                    <a id="button-inputs" class="nav-buttons">
+                        <i class="material-icons fa-fw">keyboard</i>
+                    </a>
+                    <a id="button-theme" class="nav-buttons">
+                        <i class="material-icons fa-fw">color_lens</i>
+                    </a>
+                </div>
+                <a class="nav-buttons" href="#" target="_blank">
+                    <i class="fas fa-smile-wink" style="padding-left: 6px;"></i>
+                </a>
+                <a id="streamMode" class="nav-buttons"><i class="fa fa-eye fa-fw"></i></a>
+            </div>
+            <div class="bar-circle-outer">
+                <div class="bar-circle">
+                    <div class="skin-preview"></div>
+                </div>
+                <div class="skin-wheel">
+                    <div class="skin-wheel-bg"></div>
+                    <div class="skin-selector one" value="1"></div>
+                    <div class="skin-selector two" value="2"></div>
+                    <div class="skin-selector three" value="3"></div>
+                    <div class="skin-selector four" value="4"></div>
+                    <div class="skin-selector five" value="5"></div>
+                    <div class="skin-selector six" value="6"></div>
+                    <div class="skin-selector seven" value="7"></div>
+                    <div class="skin-selector eight" value="8"></div>
+                </div>
+            </div>
+            <div class="inputs-box">
+                <input class="menu-inputs" id="tag" placeholder="Tag">
+                <input class="menu-inputs" id="nick" placeholder="Nick">
+                <input class="menu-inputs" id="arbSkin" placeholder="3rb Skin">
+                <input class="menu-inputs" id="skin" placeholder="Hice Skin">
+                <select class="menu-inputs" id="servers"><option id="ffa1" value="0.0.0.0:0">3RB.io FFA</option></select>
+                <button id="button-play"><i class="fa fa-play fa-fw"></i> Play</button>
+                <button id="button-spectate"><i class="fa fa-expand fa-fw"></i> Spectate</button>
+                <div class="decorator" style="width: 100%;height: 86px;position: absolute;bottom: 0;left: 0;background-color: #222;border-radius: 0 0 2px 2px;z-index: -1;"></div>
+            </div>
+        </div>
+
+        <div id="settings" class="menu-panel">
+            <div class="settings-close">
+                <i class="fa fa-times" aria-hidden="true"></i>
+            </div>
+            <div class="settings-container ps ps--theme_default" data-ps-id="3fcad896-4cf9-d9c9-eb47-55fc3a4e92b5">
+                <div class="row">
+                    <span class="title" hice="html.settingMenu.language">Language</span>
+                    <span class="settings-options" type="options" name="language">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                        <b value="EN" class="active">English</b>
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                    </span>
+                </div>
+                <div class="row divider"></div>
+                <div class="row">
+                    <span class="title" hice="html.settingMenu.CellAnimation">Animation delay</span>
+                    <span class="settings-options" type="range" name="CellAnimation">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                        <span value="140" step="10" min="100" max="500" class="outer">
+                            <span class="inner" style="width: 10px;"></span>
+                        </span>
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                        <span class="range-value">[140]</span>
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="title" hice="html.settingMenu.eatAnimation">Cell eat [sucking] animation</span>
+                    <span class="settings-options" type="options" name="eatAnimation">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                        <b value="off" hice="html.settingMenu.opt_off">Off</b>
+                        <b value="on" hice="html.settingMenu.opt_on" class="active">On</b>
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="title" hice="html.settingMenu.cellTextAnimation">Cell text animation</span>
+                    <span class="settings-options" type="options" name="cellTextAnimation">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                        <b value="off" hice="html.settingMenu.opt_off">Off</b>
+                        <b value="stepped" hice="html.settingMenu.opt_stepped">Stepped</b>
+                        <b value="on" hice="html.settingMenu.opt_linear" class="active">On</b>
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                    </span>
+                </div>
+                <div class="row divider"></div>
+                <div class="row">
+                    <span class="title" hice="html.settingMenu.zoomSpeed">Zoom speed</span>
+                    <span class="settings-options" type="range" name="zoomSpeed">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                        <span value="92" step="2" min="70" max="96" class="outer">
+                            <span class="inner" style="width: 84px;"></span>
+                        </span>
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                        <span class="range-value">[92]</span>
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="title" hice="html.settingMenu.cameraSpeed">Camera speed [2 default]</span>
+                    <span class="settings-options" type="range" name="cameraSpeed">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                        <span value="2" step="1" min="1" max="20" class="outer">
+                            <span class="inner" style="width: 5px;"></span>
+                        </span>
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                        <span class="range-value">[2]</span>
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="title" hice="html.settingMenu.autoZoom">Auto zoom</span>
+                    <span class="settings-options" type="options" name="autoZoom">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                        <b value="off" hice="html.settingMenu.opt_off" class="active">Off</b>
+                        <b value="on" hice="html.settingMenu.opt_on">On</b>
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                    </span>
+                </div>
+                <div class="row divider"></div>
+                <div class="row">
+                    <span class="title" hice="html.settingMenu.autoHideText">Auto hide text</span>
+                    <span class="settings-options" type="options" name="autoHideText">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                        <b value="off" hice="html.settingMenu.opt_off">Off</b>
+                        <b value="on" hice="html.settingMenu.opt_on" class="active">On</b>
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="title" hice="html.settingMenu.hideOwnNick">Hide own nick</span>
+                    <span class="settings-options" type="options" name="hideOwnNick">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                        <b value="off" hice="html.settingMenu.opt_off">Off</b>
+                        <b value="on" hice="html.settingMenu.opt_on" class="active">On</b>
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="title" hice="html.settingMenu.hideOwnMass">Hide own mass</span>
+                    <span class="settings-options" type="options" name="hideOwnMass">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                        <b value="off" hice="html.settingMenu.opt_off" class="active">Off</b>
+                        <b value="on" hice="html.settingMenu.opt_on">On</b>
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                    </span>
+                </div>
+                <div class="row divider"></div>
+                <div class="row">
+                    <span class="title" hice="html.settingMenu.cellNick">Cell Nick</span>
+                    <span class="settings-options" type="options" name="cellNick">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                        <b value="off" hice="html.settingMenu.opt_off">Off</b>
+                        <b value="on" hice="html.settingMenu.opt_on" class="active">On</b>
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="title" hice="html.settingMenu.nickShadow">Nick shadow</span>
+                    <span class="settings-options" type="options" name="nickShadow">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                        <b value="off" hice="html.settingMenu.opt_off" class="active">Off</b>
+                        <b value="performance" hice="html.settingMenu.opt_perf">Performance</b>
+                        <b value="normal" hice="html.settingMenu.opt_normal">Normal</b>
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="title" hice="html.settingMenu.cellMass">Cell Mass</span>
+                    <span class="settings-options" type="options" name="cellMass">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                        <b value="off" hice="html.settingMenu.opt_off">Off</b>
+                        <b value="shortened" hice="html.settingMenu.opt_shortened" class="active">Shortened</b>
+                        <b value="full" hice="html.settingMenu.opt_full">Full</b>
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="title" hice="html.settingMenu.massShadow">Mass shadow</span>
+                    <span class="settings-options" type="options" name="massShadow">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                        <b value="off" hice="html.settingMenu.opt_off" class="active">Off</b>
+                        <b value="performance" hice="html.settingMenu.opt_perf">Performance</b>
+                        <b value="normal" hice="html.settingMenu.opt_normal">Normal</b>
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                    </span>
+                </div>
+                <div class="row divider"></div>
+                <div class="row">
+                    <span class="title" hice="html.settingMenu.urlSkins">Hice skins</span>
+                    <span class="settings-options" type="options" name="urlSkins">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                        <b value="off" hice="html.settingMenu.opt_off">Off</b>
+                        <b value="on" hice="html.settingMenu.opt_on" class="active">On</b>
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="title" hice="html.settingMenu.arbSkins">3rb.be skins</span>
+                    <span class="settings-options" type="options" name="arbSkins">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                        <b value="off" hice="html.settingMenu.opt_off">Off</b>
+                        <b value="on" hice="html.settingMenu.opt_on" class="active">On</b>
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                    </span>
+                </div>
+                <div class="row divider"></div>
+                <div class="row">
+                    <span class="title" hice="html.settingMenu.vanillaGrid">Vanilla grid</span>
+                    <span class="settings-options" type="options" name="vanillaGrid">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                        <b value="off" hice="html.settingMenu.opt_off" class="active">Off</b>
+                        <b value="on" hice="html.settingMenu.opt_on">On</b>
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="title" hice="html.settingMenu.bgSectors">Background sectors</span>
+                    <span class="settings-options" type="options" name="bgSectors">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                        <b value="off" hice="html.settingMenu.opt_off">Off</b>
+                        <b value="onlyLines" hice="html.settingMenu.opt_onlyLines">Only lines</b>
+                        <b value="snowflakes" hice="html.settingMenu.opt_snowflakes">Snowflakes</b>
+                        <b value="normal" hice="html.settingMenu.opt_normal" class="active">Normal</b>
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                    </span>
+                </div>
+                <div class="row divider"></div>
+                <div class="row">
+                    <span class="title" hice="html.settingMenu.food">Food</span>
+                    <span class="settings-options" type="options" name="food">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                        <b value="off" hice="html.settingMenu.opt_off">Off</b>
+                        <b value="monoColored" hice="html.settingMenu.opt_singleClr" class="active">Mono colored</b>
+                        <b value="rainbow" hice="html.settingMenu.opt_rainbow">rainbow</b>
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                    </span>
+                </div>
+                <div class="row divider"></div>
+                <div class="row">
+                    <span class="title" hice="html.settingMenu.cursorLine">Cursor lines</span>
+                    <span class="settings-options" type="options" name="cursorLine">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                        <b value="off" hice="html.settingMenu.opt_off" class="active">Off</b>
+                        <b value="on" hice="html.settingMenu.opt_on">On</b>
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="title" hice="html.settingMenu.multiboxRing">Multibox Ring</span>
+                    <span class="settings-options" type="options" name="multiboxRing">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                        <b value="off" hice="html.settingMenu.opt_off">Off</b>
+                        <b value="on" hice="html.settingMenu.opt_on" class="active">On</b>
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="title" hice="html.settingMenu.teamIndicator">Teammate indicator</span>
+                    <span class="settings-options" type="options" name="teamIndicator">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                        <b value="off" hice="html.settingMenu.opt_off">Off</b>
+                        <b value="on" hice="html.settingMenu.opt_on" class="active">On</b>
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="title" hice="html.settingMenu.commander">Commander</span>
+                    <span class="settings-options" type="options" name="commander">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                        <b value="off" hice="html.settingMenu.opt_off">Off</b>
+                        <b value="on" hice="html.settingMenu.opt_on" class="active">On</b>
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                    </span>
+                </div>
+                <div class="row divider"></div>
+                <div class="row">
+                    <span class="title" hice="html.settingMenu.chatType">Chat type</span>
+                    <span class="settings-options" type="options" name="chatType">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                        <b value="chatroom" hice="html.settingMenu.opt_chatroom">Chatroom</b>
+                        <b value="popup" hice="html.settingMenu.opt_popup" class="active">Pop up</b>
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                    </span>
+                </div>
+            <div class="ps__scrollbar-x-rail" style="left: 0px; bottom: 0px;"><div class="ps__scrollbar-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__scrollbar-y-rail" style="top: 0px; right: 0px;"><div class="ps__scrollbar-y" tabindex="0" style="top: 0px; height: 0px;"></div></div></div>
+        </div>
+        <div id="inputs" class="menu-panel">
+            <div class="inputs-tab-bar">
+                <span class="inputs-tab active" target="#hotkeys">
+                    <i class="fa fa-keyboard-o"></i>
+                    <span hice="html.hkMenu.title">Hotkeys</span>
+                </span>
+
+                <span class="inputs-tab" target="#mouse">
+                    <i class="fa fa-mouse-pointer"></i>
+                    <span hice="html.mouseMenu.title">Mouse</span>
+                </span>
+
+                <span class="inputs-tab" target="#commands">
+                    <i class="fa fa-comments"></i>
+                    <span hice="html.commandsMenu.title">Commands</span>
+                </span>
+
+                <span class="inputs-tab close" target="#close">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </span>
+            </div>
+            <div class="inputs-menu-container">
+                <div id="hotkeys" class="inputs-menu active ps ps--theme_default" data-ps-id="6ca0cc01-398b-fb8f-f98f-4a756d762da2">
+                    <div class="row" name="toggleMenuKey">
+                        <span class="title" hice="html.hkMenu.toggleMenuKey">Show / hide menu</span>
+                        <input class="key" value="ESC">
+                    </div>
+                    <div class="row" name="respawnKey">
+                        <span class="title" hice="html.hkMenu.respawnKey">Quick respawn</span>
+                        <input class="key" value="TILDE">
+                    </div>
+                    <div class="row" name="multiboxTab">
+                        <span class="title" hice="html.hkMenu.multiboxTab">Multibox switch</span>
+                        <input class="key" value="TAB">
+                    </div>
+                    <div class="row" name="togglemultiboxRing">
+                        <span class="title" hice="html.hkMenu.togglemultiboxRing">Toggle Multibox ring</span>
+                        <input class="key" value="L">
+                    </div>
+                    <div class="row" name="feedKey">
+                        <span class="title" hice="html.hkMenu.feedKey">Feed</span>
+                        <input class="key" value="W">
+                    </div>
+                    <div class="row" name="macroFeedKey">
+                        <span class="title" hice="html.hkMenu.macroFeedKey">Macro feed</span>
+                        <input class="key" value="Q">
+                    </div>
+                    <div class="row" name="splitKey">
+                        <span class="title" hice="html.hkMenu.splitKey">Split</span>
+                        <input class="key" value="SPACE">
+                    </div>
+                    <div class="row" name="doubleSplitKey">
+                        <span class="title" hice="html.hkMenu.doubleSplitKey">Double split</span>
+                        <input class="key" value="E">
+                    </div>
+                    <div class="row" name="split16Key">
+                        <span class="title" hice="html.hkMenu.split16Key">Split 16</span>
+                        <input class="key" value="R">
+                    </div>
+                    <div class="row" name="stopKey">
+                        <span class="title" hice="html.hkMenu.stopKey">Cell pause</span>
+                        <input class="key" value="S">
+                    </div>
+                    <div class="row" name="chatKey">
+                        <span class="title" hice="html.hkMenu.chatKey">Chat key</span>
+                        <input class="key" value="Enter">
+                    </div>
+                    <div class="row" name="freeSpectateKey">
+                        <span class="title" hice="html.hkMenu.freeSpectateKey">Toggle spectate mode</span>
+                        <input class="key" value="Y">
+                    </div>
+                    <div class="row" name="toggleNick">
+                        <span class="title" hice="html.hkMenu.toggleNick">Toggle Cell nick</span>
+                        <input class="key" value="N">
+                    </div>
+                    <div class="row" name="toggleMass">
+                        <span class="title" hice="html.hkMenu.toggleMass">Toggle cell mass</span>
+                        <input class="key" value="M">
+                    </div>
+                    <div class="row" name="toggleSkin">
+                        <span class="title" hice="html.hkMenu.toggleSkin">Toggle Skin</span>
+                        <input class="key" value="A">
+                    </div>
+                    <div class="row" name="toggleCustomSkin">
+                        <span class="title" hice="html.hkMenu.toggleCustomSkin">Toggle Custom Skin</span>
+                        <input class="key" value="X">
+                    </div>
+                    <div class="row" name="toggleFood">
+                        <span class="title" hice="html.hkMenu.toggleFood">Toggle food</span>
+                        <input class="key" value="F">
+                    </div>
+                    <div class="row" name="command0Key">
+                        <span class="title" hice="html.hkMenu.command0Key">Command 0</span>
+                        <input class="key" value="0">
+                    </div>
+                    <div class="row" name="command1Key">
+                        <span class="title" hice="html.hkMenu.command1Key">Command 1</span>
+                        <input class="key" value="1">
+                    </div>
+                    <div class="row" name="command2Key">
+                        <span class="title" hice="html.hkMenu.command2Key">Command 2</span>
+                        <input class="key" value="2">
+                    </div>
+                    <div class="row" name="command3Key">
+                        <span class="title" hice="html.hkMenu.command3Key">Command 3</span>
+                        <input class="key" value="3">
+                    </div>
+                    <div class="row" name="command4Key">
+                        <span class="title" hice="html.hkMenu.command4Key">Command 4</span>
+                        <input class="key" value="4">
+                    </div>
+                    <div class="row" name="command5Key">
+                        <span class="title" hice="html.hkMenu.command5Key">Command 5</span>
+                        <input class="key" value="5">
+                    </div>
+                    <div class="row" name="command6Key">
+                        <span class="title" hice="html.hkMenu.command6Key">Command 6</span>
+                        <input class="key" value="6">
+                    </div>
+                    <div class="row" name="command7Key">
+                        <span class="title" hice="html.hkMenu.command7Key">Command 7</span>
+                        <input class="key" value="7">
+                    </div>
+                    <div class="row" name="command8Key">
+                        <span class="title" hice="html.hkMenu.command8Key">Command 8</span>
+                        <input class="key" value="8">
+                    </div>
+                    <div class="row" name="command9Key">
+                        <span class="title" hice="html.hkMenu.command9Key">Command 9</span>
+                        <input class="key" value="9">
+                    </div>
+                    <div class="row" name="zoom1key">
+                        <span class="title" hice="html.hkMenu.zoom1key">Zoom level 1</span>
+                        <input class="key" value="ALT+1">
+                    </div>
+                    <div class="row" name="zoom2key">
+                        <span class="title" hice="html.hkMenu.zoom2key">Zoom level 2</span>
+                        <input class="key" value="ALT+2">
+                    </div>
+                    <div class="row" name="zoom3key">
+                        <span class="title" hice="html.hkMenu.zoom3key">Zoom level 3</span>
+                        <input class="key" value="ALT+3">
+                    </div>
+                    <div class="row" name="zoom4key">
+                        <span class="title" hice="html.hkMenu.zoom4key">Zoom level 4</span>
+                        <input class="key" value="ALT+4">
+                    </div>
+                    <div class="row" name="zoom5key">
+                        <span class="title" hice="html.hkMenu.zoom5key">Zoom level 5</span>
+                        <input class="key" value="ALT+5">
+                    </div>
+                <div class="ps__scrollbar-x-rail" style="left: 0px; bottom: 0px;"><div class="ps__scrollbar-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__scrollbar-y-rail" style="top: 0px; right: 0px;"><div class="ps__scrollbar-y" tabindex="0" style="top: 0px; height: 0px;"></div></div></div>
+                <div id="mouse" class="inputs-menu ps ps--theme_default" data-ps-id="301c2cfd-d2e4-552b-a4d1-5400244e3f9a">
+                    <div class="row">
+                        <span class="title" hice="html.mouseMenu.lmb">Left click</span>
+                        <span class="mouse-options" type="options" name="leftClick">
+                            <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                            <b value="off" hice="html.mouseMenu.off" class="active">Off</b>
+                            <b value="feed" hice="html.mouseMenu.feed">Feed</b>
+                            <b value="macroFeed" hice="html.mouseMenu.macroFeed">Macro feed</b>
+                            <b value="split" hice="html.mouseMenu.split">Split</b>
+                            <b value="doubleSplit" hice="html.mouseMenu.doubleSplit">Double split</b>
+                            <b value="split16" hice="html.mouseMenu.split16">Split 16</b>
+                            <b value="commander" hice="html.mouseMenu.commander">Commander</b>
+                            <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <div class="row">
+                        <span class="title" hice="html.mouseMenu.scroll">Middle click</span>
+                        <span class="mouse-options" type="options" name="middleClick">
+                            <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                            <b value="off" hice="html.mouseMenu.off">Off</b>
+                            <b value="feed" hice="html.mouseMenu.feed">Feed</b>
+                            <b value="macroFeed" hice="html.mouseMenu.macroFeed">Macro feed</b>
+                            <b value="split" hice="html.mouseMenu.split">Split</b>
+                            <b value="doubleSplit" hice="html.mouseMenu.doubleSplit">Double split</b>
+                            <b value="split16" hice="html.mouseMenu.split16">Split 16</b>
+                            <b value="commander" hice="html.mouseMenu.commander" class="active">Commander</b>
+                            <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <div class="row">
+                        <span class="title" hice="html.mouseMenu.rmb">Right click</span>
+                        <span class="mouse-options" type="options" name="rightClick">
+                            <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                            <b value="off" hice="html.mouseMenu.off" class="active">Off</b>
+                            <b value="feed" hice="html.mouseMenu.feed">Feed</b>
+                            <b value="macroFeed" hice="html.mouseMenu.macroFeed">Macro feed</b>
+                            <b value="split" hice="html.mouseMenu.split">Split</b>
+                            <b value="doubleSplit" hice="html.mouseMenu.doubleSplit">Double split</b>
+                            <b value="split16" hice="html.mouseMenu.split16">Split 16</b>
+                            <b value="commander" hice="html.mouseMenu.commander">Commander</b>
+                            <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                <div class="ps__scrollbar-x-rail" style="left: 0px; bottom: 0px;"><div class="ps__scrollbar-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__scrollbar-y-rail" style="top: 0px; right: 0px;"><div class="ps__scrollbar-y" tabindex="0" style="top: 0px; height: 0px;"></div></div></div>
+                <div id="commands" class="inputs-menu ps ps--theme_default" data-ps-id="1ba1082e-6805-9471-6b76-88bc291bb8d1">
+                    <div class="row">
+                        <span class="command-input-box">
+                            <i>0</i>
+                            <input placeholder="Command 0" id="command0">
+                        </span>
+                    </div>
+                    <div class="row">
+                        <span class="command-input-box">
+                            <i>1</i>
+                            <input placeholder="Command 1" id="command1">
+                        </span>
+                    </div>
+                    <div class="row">
+                        <span class="command-input-box">
+                            <i>2</i>
+                            <input placeholder="Command 2" id="command2">
+                        </span>
+                    </div>
+                    <div class="row">
+                        <span class="command-input-box">
+                            <i>3</i>
+                            <input placeholder="Command 3" id="command3">
+                        </span>
+                    </div>
+                    <div class="row">
+                        <span class="command-input-box">
+                            <i>4</i>
+                            <input placeholder="Command 4" id="command4">
+                        </span>
+                    </div>
+                    <div class="row">
+                        <span class="command-input-box">
+                            <i>5</i>
+                            <input placeholder="Command 5" id="command5">
+                        </span>
+                    </div>
+                    <div class="row">
+                        <span class="command-input-box">
+                            <i>6</i>
+                            <input placeholder="Command 6" id="command6">
+                        </span>
+                    </div>
+                    <div class="row">
+                        <span class="command-input-box">
+                            <i>7</i>
+                            <input placeholder="Command 7" id="command7">
+                        </span>
+                    </div>
+                    <div class="row">
+                        <span class="command-input-box">
+                            <i>8</i>
+                            <input placeholder="Command 8" id="command8">
+                        </span>
+                    </div>
+                    <div class="row">
+                        <span class="command-input-box">
+                            <i>9</i>
+                            <input placeholder="Command 9" id="command9">
+                        </span>
+                    </div>
+                <div class="ps__scrollbar-x-rail" style="left: 0px; bottom: 0px;"><div class="ps__scrollbar-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__scrollbar-y-rail" style="top: 0px; right: 0px;"><div class="ps__scrollbar-y" tabindex="0" style="top: 0px; height: 0px;"></div></div></div>
+            </div>
+        </div>
+        <div id="theme" class="menu-panel">
+            <div class="theme-close">X</div>
+            <div class="theme-container ps ps--theme_default" data-ps-id="444a5aea-5db8-50a8-bc6b-e753b8e147ff">
+                <div class="row">
+                    <span class="title" hice="html.themeMenu.selectedPreset">Theme preset</span>
+                    <span class="theme-options" type="options" name="selectedPreset">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                        <b value="HICE Plus">HICE Plus</b>
+                        <b value="Pastels">Pastels</b>
+                        <b value="Agarplus v2">Agarplus v2</b>
+                        <b value="Ogario v4">Ogario v4</b>
+                        <b value="HKG">HKG</b>
+                        <b value="Yin">Yin</b>
+                        <b value="VNDOT">VNDOT</b>
+                        <b value="OZYDOT">OZYDOT</b>
+                        <b value="custom" class="active">Custom</b>
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="title" hice="html.themeMenu.chatFontSize">Chat font size</span>
+                    <span class="theme-options" type="range" name="chatFontSize">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                        <span value="14" step="1" min="10" max="24" class="outer">
+                            <span class="inner" style="width: 28px;"></span>
+                        </span>
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                        <span class="range-value">[14]</span>
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="title" hice="html.themeMenu.lbSize">Leaderboard size</span>
+                    <span class="theme-options" type="range" name="lbSize">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                        <span value="110" step="5" min="70" max="200" class="outer">
+                            <span class="inner" style="width: 30px;"></span>
+                        </span>
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                        <span class="range-value">[110]</span>
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="title" hice="html.themeMenu.minimapSize">Minimap size</span>
+                    <span class="theme-options" type="range" name="minimapSize">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                        <span value="200" step="5" min="100" max="250" class="outer">
+                            <span class="inner" style="width: 66px;"></span>
+                        </span>
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                        <span class="range-value">[200]</span>
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="title" hice="html.themeMenu.cellTransparency">Cell transparency</span>
+                    <span class="theme-options" type="range" name="cellTransparency">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                        <span value="100" step="5" min="40" max="100" class="outer">
+                            <span class="inner" style="width: 100px;"></span>
+                        </span>
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                        <span class="range-value">[100]</span>
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="title" hice="html.themeMenu.lightenCellColor">Lighten cell color</span>
+                    <span class="theme-options" type="range" name="lightenCellColor">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                        <span value="100" step="5" min="40" max="100" class="outer">
+                            <span class="inner" style="width: 100px;"></span>
+                        </span>
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                        <span class="range-value">[100]</span>
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="title" hice="html.themeMenu.borderColor">Border color</span>
+                    <span class="theme-options" type="colorpicker">
+                        <div class="minicolors minicolors-theme-default minicolors-position-bottom minicolors-position-right"><input id="borderColor" opacity="0" class="minicolors-input" size="7"><span class="minicolors-swatch minicolors-sprite minicolors-input-swatch"><span class="minicolors-swatch-color" style="background-color: rgb(255, 255, 255);"></span></span><div class="minicolors-panel minicolors-slider-hue"><div class="minicolors-slider minicolors-sprite"><div class="minicolors-picker" style="top: 0px;"></div></div><div class="minicolors-opacity-slider minicolors-sprite"><div class="minicolors-picker"></div></div><div class="minicolors-grid minicolors-sprite" style="background-color: rgb(255, 0, 0);"><div class="minicolors-grid-inner"></div><div class="minicolors-picker" style="top: 0px; left: 0px;"><div></div></div></div></div></div>
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="title" hice="html.themeMenu.borderWidth">Border width</span>
+                    <span class="theme-options" type="range" name="borderWidth">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                        <span value="60" step="2" min="2" max="150" class="outer">
+                            <span class="inner" style="width: 39px;"></span>
+                        </span>
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                        <span class="range-value">[60]</span>
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="title" hice="html.themeMenu.gridColor">Grid color</span>
+                    <span class="theme-options" type="colorpicker">
+                        <div class="minicolors minicolors-theme-default minicolors-position-bottom minicolors-position-right"><input id="gridColor" opacity="0" class="minicolors-input" size="7"><span class="minicolors-swatch minicolors-sprite minicolors-input-swatch"><span class="minicolors-swatch-color" style="background-color: rgb(17, 17, 17);"></span></span><div class="minicolors-panel minicolors-slider-hue"><div class="minicolors-slider minicolors-sprite"><div class="minicolors-picker" style="top: 0px;"></div></div><div class="minicolors-opacity-slider minicolors-sprite"><div class="minicolors-picker"></div></div><div class="minicolors-grid minicolors-sprite" style="background-color: rgb(255, 0, 0);"><div class="minicolors-grid-inner"></div><div class="minicolors-picker" style="top: 139px; left: 0px;"><div></div></div></div></div></div>
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="title" hice="html.themeMenu.gridTextColor">Grid text color</span>
+                    <span class="theme-options" type="colorpicker">
+                        <div class="minicolors minicolors-theme-default minicolors-position-bottom minicolors-position-right"><input id="gridTextColor" opacity="0" class="minicolors-input" size="7"><span class="minicolors-swatch minicolors-sprite minicolors-input-swatch"><span class="minicolors-swatch-color" style="background-color: rgb(17, 17, 17);"></span></span><div class="minicolors-panel minicolors-slider-hue"><div class="minicolors-slider minicolors-sprite"><div class="minicolors-picker" style="top: 0px;"></div></div><div class="minicolors-opacity-slider minicolors-sprite"><div class="minicolors-picker"></div></div><div class="minicolors-grid minicolors-sprite" style="background-color: rgb(255, 0, 0);"><div class="minicolors-grid-inner"></div><div class="minicolors-picker" style="top: 139px; left: 0px;"><div></div></div></div></div></div>
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="title" hice="html.themeMenu.gridTextSize">Grid text size</span>
+                    <span class="theme-options" type="range" name="gridTextSize">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                        <span value="1500" step="100" min="500" max="2000" class="outer">
+                            <span class="inner" style="width: 66px;"></span>
+                        </span>
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                        <span class="range-value">[1500]</span>
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="title" hice="html.themeMenu.gridTextFont">Grid text font</span>
+                    <span class="theme-options" type="options" name="gridTextFont">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                        <b value="ubuntu" class="active">Ubuntu</b>
+                        <b value="raleway">Raleway</b>
+                        <b value="cursive">Cursive</b>
+                        <b value="monospace">Monospace</b>
+                        <b value="serif">Serif</b>
+                        <b value="sans-serif">Sans serif</b>
+                        <b value="oswald">Oswald</b>
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="title" hice="html.themeMenu.gridWidth">Grid width</span>
+                    <span class="theme-options" type="range" name="gridWidth">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                        <span value="100" step="2" min="2" max="150" class="outer">
+                            <span class="inner" style="width: 66px;"></span>
+                        </span>
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                        <span class="range-value">[100]</span>
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="title" hice="html.themeMenu.nickColor">Nick color</span>
+                    <span class="theme-options" type="colorpicker">
+                        <div class="minicolors minicolors-theme-default minicolors-position-bottom minicolors-position-right"><input id="nickColor" opacity="0" class="minicolors-input" size="7"><span class="minicolors-swatch minicolors-sprite minicolors-input-swatch"><span class="minicolors-swatch-color" style="background-color: rgb(255, 255, 255);"></span></span><div class="minicolors-panel minicolors-slider-hue"><div class="minicolors-slider minicolors-sprite"><div class="minicolors-picker" style="top: 0px;"></div></div><div class="minicolors-opacity-slider minicolors-sprite"><div class="minicolors-picker"></div></div><div class="minicolors-grid minicolors-sprite" style="background-color: rgb(255, 0, 0);"><div class="minicolors-grid-inner"></div><div class="minicolors-picker" style="top: 0px; left: 0px;"><div></div></div></div></div></div>
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="title" hice="html.themeMenu.nickStrokeColor">Nick stroke color</span>
+                    <span class="theme-options" type="colorpicker">
+                        <div class="minicolors minicolors-theme-default minicolors-position-bottom minicolors-position-right"><input id="nickStrokeColor" opacity="0" class="minicolors-input" size="7"><span class="minicolors-swatch minicolors-sprite minicolors-input-swatch"><span class="minicolors-swatch-color" style="background-color: rgb(0, 0, 0);"></span></span><div class="minicolors-panel minicolors-slider-hue"><div class="minicolors-slider minicolors-sprite"><div class="minicolors-picker" style="top: 0px;"></div></div><div class="minicolors-opacity-slider minicolors-sprite"><div class="minicolors-picker"></div></div><div class="minicolors-grid minicolors-sprite" style="background-color: rgb(255, 0, 0);"><div class="minicolors-grid-inner"></div><div class="minicolors-picker" style="top: 150px; left: 0px;"><div></div></div></div></div></div>
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="title" hice="html.themeMenu.cellNickSize">Nick size</span>
+                    <span class="theme-options" type="range" name="cellNickSize">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                        <span value="120" step="5" min="100" max="200" class="outer">
+                            <span class="inner" style="width: 20px;"></span>
+                        </span>
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                        <span class="range-value">[120]</span>
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="title" hice="html.themeMenu.nickFont">Nick font</span>
+                    <span class="theme-options" type="options" name="nickFont">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                        <b value="ubuntu" class="active">Ubuntu</b>
+                        <b value="raleway">Raleway</b>
+                        <b value="cursive">Cursive</b>
+                        <b value="monospace">Monospace</b>
+                        <b value="serif">Serif</b>
+                        <b value="sans-serif">Sans serif</b>
+                        <b value="oswald">Oswald</b>
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="title" hice="html.themeMenu.massColor">Mass color</span>
+                    <span class="theme-options" type="colorpicker">
+                        <div class="minicolors minicolors-theme-default minicolors-position-bottom minicolors-position-right"><input id="massColor" opacity="0" class="minicolors-input" size="7"><span class="minicolors-swatch minicolors-sprite minicolors-input-swatch"><span class="minicolors-swatch-color" style="background-color: rgb(255, 255, 255);"></span></span><div class="minicolors-panel minicolors-slider-hue"><div class="minicolors-slider minicolors-sprite"><div class="minicolors-picker" style="top: 0px;"></div></div><div class="minicolors-opacity-slider minicolors-sprite"><div class="minicolors-picker"></div></div><div class="minicolors-grid minicolors-sprite" style="background-color: rgb(255, 0, 0);"><div class="minicolors-grid-inner"></div><div class="minicolors-picker" style="top: 0px; left: 0px;"><div></div></div></div></div></div>
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="title" hice="html.themeMenu.massStrokeColor">Mass stroke color</span>
+                    <span class="theme-options" type="colorpicker">
+                        <div class="minicolors minicolors-theme-default minicolors-position-bottom minicolors-position-right"><input id="massStrokeColor" opacity="0" class="minicolors-input" size="7"><span class="minicolors-swatch minicolors-sprite minicolors-input-swatch"><span class="minicolors-swatch-color" style="background-color: rgb(0, 0, 0);"></span></span><div class="minicolors-panel minicolors-slider-hue"><div class="minicolors-slider minicolors-sprite"><div class="minicolors-picker" style="top: 0px;"></div></div><div class="minicolors-opacity-slider minicolors-sprite"><div class="minicolors-picker"></div></div><div class="minicolors-grid minicolors-sprite" style="background-color: rgb(255, 0, 0);"><div class="minicolors-grid-inner"></div><div class="minicolors-picker" style="top: 150px; left: 0px;"><div></div></div></div></div></div>
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="title" hice="html.themeMenu.cellMassSize">Mass size</span>
+                    <span class="theme-options" type="range" name="cellMassSize">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                        <span value="150" step="5" min="100" max="200" class="outer">
+                            <span class="inner" style="width: 50px;"></span>
+                        </span>
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                        <span class="range-value">[150]</span>
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="title" hice="html.themeMenu.massFont">Mass font</span>
+                    <span class="theme-options" type="options" name="massFont">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                        <b value="ubuntu" class="active">Ubuntu</b>
+                        <b value="raleway">Raleway</b>
+                        <b value="cursive">Cursive</b>
+                        <b value="monospace">Monospace</b>
+                        <b value="serif">Serif</b>
+                        <b value="sans-serif">Sans serif</b>
+                        <b value="oswald">Oswald</b>
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="title" hice="html.themeMenu.foodColor">Food color</span>
+                    <span class="theme-options" type="colorpicker">
+                        <div class="minicolors minicolors-theme-default minicolors-position-bottom minicolors-position-right"><input id="foodColor" opacity="0" class="minicolors-input" size="7"><span class="minicolors-swatch minicolors-sprite minicolors-input-swatch"><span class="minicolors-swatch-color" style="background-color: rgb(97, 17, 255);"></span></span><div class="minicolors-panel minicolors-slider-hue"><div class="minicolors-slider minicolors-sprite"><div class="minicolors-picker" style="top: 41.5966px;"></div></div><div class="minicolors-opacity-slider minicolors-sprite"><div class="minicolors-picker"></div></div><div class="minicolors-grid minicolors-sprite" style="background-color: rgb(85, 0, 255);"><div class="minicolors-grid-inner"></div><div class="minicolors-picker" style="top: 0px; left: 140px;"><div></div></div></div></div></div>
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="title" hice="html.themeMenu.foodSize">Food size</span>
+                    <span class="theme-options" type="range" name="foodSize">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                        <span value="1" step="1" min="1" max="10" class="outer">
+                            <span class="inner" style="width: 0px;"></span>
+                        </span>
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                        <span class="range-value">[1]</span>
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="title" hice="html.themeMenu.virusColor">Virus color</span>
+                    <span class="theme-options" type="colorpicker">
+                        <div class="minicolors minicolors-theme-default minicolors-position-bottom minicolors-position-right"><input id="virusColor" opacity="0" class="minicolors-input" size="7"><span class="minicolors-swatch minicolors-sprite minicolors-input-swatch"><span class="minicolors-swatch-color" style="background-color: rgb(143, 143, 143);"></span></span><div class="minicolors-panel minicolors-slider-hue"><div class="minicolors-slider minicolors-sprite"><div class="minicolors-picker" style="top: 0px;"></div></div><div class="minicolors-opacity-slider minicolors-sprite"><div class="minicolors-picker"></div></div><div class="minicolors-grid minicolors-sprite" style="background-color: rgb(255, 0, 0);"><div class="minicolors-grid-inner"></div><div class="minicolors-picker" style="top: 65px; left: 0px;"><div></div></div></div></div></div>
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="title" hice="html.themeMenu.virusBorderColor">Virus border color</span>
+                    <span class="theme-options" type="colorpicker">
+                        <div class="minicolors minicolors-theme-default minicolors-position-bottom minicolors-position-right"><input id="virusBorderColor" opacity="0" class="minicolors-input" size="7"><span class="minicolors-swatch minicolors-sprite minicolors-input-swatch"><span class="minicolors-swatch-color" style="background-color: rgb(194, 194, 194);"></span></span><div class="minicolors-panel minicolors-slider-hue"><div class="minicolors-slider minicolors-sprite"><div class="minicolors-picker" style="top: 0px;"></div></div><div class="minicolors-opacity-slider minicolors-sprite"><div class="minicolors-picker"></div></div><div class="minicolors-grid minicolors-sprite" style="background-color: rgb(255, 0, 0);"><div class="minicolors-grid-inner"></div><div class="minicolors-picker" style="top: 35px; left: 0px;"><div></div></div></div></div></div>
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="title" hice="html.themeMenu.virusBorderWidth">virus border width</span>
+                    <span class="theme-options" type="range" name="virusBorderWidth">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                        <span value="10" step="1" min="1" max="25" class="outer">
+                            <span class="inner" style="width: 37px;"></span>
+                        </span>
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                        <span class="range-value">[10]</span>
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="title" hice="html.themeMenu.backgroundColor">Background color</span>
+                    <span class="theme-options" type="colorpicker">
+                        <div class="minicolors minicolors-theme-default minicolors-position-bottom minicolors-position-right"><input id="backgroundColor" opacity="0" class="minicolors-input" size="7"><span class="minicolors-swatch minicolors-sprite minicolors-input-swatch"><span class="minicolors-swatch-color" style="background-color: rgb(0, 0, 0);"></span></span><div class="minicolors-panel minicolors-slider-hue"><div class="minicolors-slider minicolors-sprite"><div class="minicolors-picker" style="top: 0px;"></div></div><div class="minicolors-opacity-slider minicolors-sprite"><div class="minicolors-picker"></div></div><div class="minicolors-grid minicolors-sprite" style="background-color: rgb(255, 0, 0);"><div class="minicolors-grid-inner"></div><div class="minicolors-picker" style="top: 150px; left: 0px;"><div></div></div></div></div></div>
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="title" hice="html.themeMenu.commanderColor">Commander color</span>
+                    <span class="theme-options" type="colorpicker">
+                        <div class="minicolors minicolors-theme-default minicolors-position-bottom minicolors-position-right"><input id="commanderColor" opacity="0" class="minicolors-input" size="7"><span class="minicolors-swatch minicolors-sprite minicolors-input-swatch"><span class="minicolors-swatch-color" style="background-color: rgb(245, 227, 93);"></span></span><div class="minicolors-panel minicolors-slider-hue"><div class="minicolors-slider minicolors-sprite"><div class="minicolors-picker" style="top: 127.961px;"></div></div><div class="minicolors-opacity-slider minicolors-sprite"><div class="minicolors-picker"></div></div><div class="minicolors-grid minicolors-sprite" style="background-color: rgb(255, 225, 0);"><div class="minicolors-grid-inner"></div><div class="minicolors-picker" style="top: 5px; left: 94px;"><div></div></div></div></div></div>
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="title" hice="html.themeMenu.indicatorSize">Indicator size</span>
+                    <span class="theme-options" type="range" name="indicatorSize">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                        <span value="100" step="5" min="50" max="150" class="outer">
+                            <span class="inner" style="width: 50px;"></span>
+                        </span>
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                        <span class="range-value">[100]</span>
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="title" hice="html.themeMenu.multiboxActive">Active cell stroke [multibox]</span>
+                    <span class="theme-options" type="colorpicker">
+                        <div class="minicolors minicolors-theme-default minicolors-position-bottom minicolors-position-right"><input id="multiboxActive" opacity="0" class="minicolors-input" size="7"><span class="minicolors-swatch minicolors-sprite minicolors-input-swatch"><span class="minicolors-swatch-color" style="background-color: rgb(255, 97, 248);"></span></span><div class="minicolors-panel minicolors-slider-hue"><div class="minicolors-slider minicolors-sprite"><div class="minicolors-picker" style="top: 23.8924px;"></div></div><div class="minicolors-opacity-slider minicolors-sprite"><div class="minicolors-picker"></div></div><div class="minicolors-grid minicolors-sprite" style="background-color: rgb(255, 0, 242);"><div class="minicolors-grid-inner"></div><div class="minicolors-picker" style="top: 0px; left: 93px;"><div></div></div></div></div></div>
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="title" hice="html.themeMenu.multiboxInactive">Inactive cell stroke [multibox]</span>
+                    <span class="theme-options" type="colorpicker">
+                        <div class="minicolors minicolors-theme-default minicolors-position-bottom minicolors-position-right"><input id="multiboxInactive" opacity="0" class="minicolors-input" size="7"><span class="minicolors-swatch minicolors-sprite minicolors-input-swatch"><span class="minicolors-swatch-color" style="background-color: rgb(255, 255, 255);"></span></span><div class="minicolors-panel minicolors-slider-hue"><div class="minicolors-slider minicolors-sprite"><div class="minicolors-picker" style="top: 0px;"></div></div><div class="minicolors-opacity-slider minicolors-sprite"><div class="minicolors-picker"></div></div><div class="minicolors-grid minicolors-sprite" style="background-color: rgb(255, 0, 0);"><div class="minicolors-grid-inner"></div><div class="minicolors-picker" style="top: 0px; left: 0px;"><div></div></div></div></div></div>
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="title" hice="html.themeMenu.multiboxRingWidth">Multibox Ring Width</span>
+                    <span class="theme-options" type="range" name="multiboxRingWidth">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                        <span value="10" step="2" min="2" max="100" class="outer">
+                            <span class="inner" style="width: 8px;"></span>
+                        </span>
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                        <span class="range-value">[10]</span>
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="title" hice="html.themeMenu.team1color">Team 1 color [Double Tag Mode]</span>
+                    <span class="theme-options" type="colorpicker">
+                        <div class="minicolors minicolors-theme-default minicolors-position-bottom minicolors-position-right"><input id="team1color" opacity="0" class="minicolors-input" size="7"><span class="minicolors-swatch minicolors-sprite minicolors-input-swatch"><span class="minicolors-swatch-color" style="background-color: rgb(174, 174, 174);"></span></span><div class="minicolors-panel minicolors-slider-hue"><div class="minicolors-slider minicolors-sprite"><div class="minicolors-picker" style="top: 0px;"></div></div><div class="minicolors-opacity-slider minicolors-sprite"><div class="minicolors-picker"></div></div><div class="minicolors-grid minicolors-sprite" style="background-color: rgb(255, 0, 0);"><div class="minicolors-grid-inner"></div><div class="minicolors-picker" style="top: 47px; left: 0px;"><div></div></div></div></div></div>
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="title" hice="html.themeMenu.team2color">Team 2 color [Double Tag Mode]</span>
+                    <span class="theme-options" type="colorpicker">
+                        <div class="minicolors minicolors-theme-default minicolors-position-bottom minicolors-position-right"><input id="team2color" opacity="0" class="minicolors-input" size="7"><span class="minicolors-swatch minicolors-sprite minicolors-input-swatch"><span class="minicolors-swatch-color" style="background-color: rgb(255, 23, 31);"></span></span><div class="minicolors-panel minicolors-slider-hue"><div class="minicolors-slider minicolors-sprite"><div class="minicolors-picker" style="top: 0.862069px;"></div></div><div class="minicolors-opacity-slider minicolors-sprite"><div class="minicolors-picker"></div></div><div class="minicolors-grid minicolors-sprite" style="background-color: rgb(255, 0, 9);"><div class="minicolors-grid-inner"></div><div class="minicolors-picker" style="top: 0px; left: 137px;"><div></div></div></div></div></div>
+                    </span>
+                </div>
+            <div class="ps__scrollbar-x-rail" style="left: 0px; bottom: 0px;"><div class="ps__scrollbar-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__scrollbar-y-rail" style="top: 0px; right: 0px;"><div class="ps__scrollbar-y" tabindex="0" style="top: 0px; height: 0px;"></div></div></div>
+        </div>
+    </div>
+    <canvas id="canvas" width="987" height="617"></canvas>
+    <script type="text/javascript" src="https://patient-leaf-2f1a.maamargasouma.workers.dev/scripts/bundle.js"></script>
+    <script type="text/javascript" src="https://patient-leaf-2f1a.maamargasouma.workers.dev/scripts/patch.js"></script>
+</body>
+</html>
