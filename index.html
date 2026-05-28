@@ -2,21 +2,24 @@
 <head>
     <meta charset="UTF-8">
     <title>HICE — Multibox</title>
-    <script type="text/javascript" src="https://patient-leaf-2f1a.maamargasouma.workers.dev/scripts/vendor.js"></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="" crossorigin="anonymous">
     <link href="https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Oswald:300,400|Raleway:300,400,500|Ubuntu:400,500,700" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="https://patient-leaf-2f1a.maamargasouma.workers.dev/styles/bundle.css">
-    <script src="https://unpkg.com/tippy.js@2.0.4/dist/tippy.all.min.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <script src="https://cdn.socket.io/socket.io-1.3.5.js"></script>
-    <script src="https://patient-leaf-2f1a.maamargasouma.workers.dev/scripts/shim.js"></script>
-    <link rel="shortcut icon" href="https://patient-leaf-2f1a.maamargasouma.workers.dev/images/hice-favicon.png">
-<style></style>
+    <link rel="stylesheet" type="text/css" href="styles/bundle.css">
+    <link rel="shortcut icon" href="images/hice-favicon.png">
+    <script src="scripts/vendor.js"></script>
+    <script src="scripts/tippy.all.min.js"></script>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" defer></script>
+    <script src="scripts/shim.js"></script>
+    <style></style>
 </head>
 <body style="background: rgb(0, 0, 0);">
 
     <div id="admin_message"></div>
+    <div class="cf-turnstile" style="position:absolute;top:-999px;left:-999px"></div>
+    <div id="loading-screen"><div class="ls-title">HICE — Multibox</div><div class="ls-spinner"><span id="ls-icon"><i class="fa fa-solid fa-circle-notch fa-spin"></i></span><span style="display:block;" id="ls-message">Loading...</span></div></div>
+    <canvas id="canvas"></canvas>
     <div id="huds">
         <div id="leaderboard-hud">
             <div id="leaderboard-head" hice="html.leaderboard.title" style="font-size: 26px;">Hice Plus</div>
@@ -214,13 +217,21 @@
                 </div>
             </div>
             <div class="inputs-box">
-                <input class="menu-inputs" id="tag" placeholder="Tag">
-                <input class="menu-inputs" id="nick" placeholder="Nick">
-                <input class="menu-inputs" id="arbSkin" placeholder="3rb Skin">
-                <input class="menu-inputs" id="skin" placeholder="Hice Skin">
-                <select class="menu-inputs" id="servers"><option id="ffa1" value="0.0.0.0:0">3RB.io FFA</option></select>
-                <button id="button-play"><i class="fa fa-play fa-fw"></i> Play</button>
-                <button id="button-spectate"><i class="fa fa-expand fa-fw"></i> Spectate</button>
+                <div style="display:flex;gap:4px;margin-bottom:4px">
+                    <input class="menu-inputs" id="tag" placeholder="Tag" style="width:50px">
+                    <input class="menu-inputs" id="nick" placeholder="Nick 1" style="flex:1">
+                    <input class="menu-inputs" id="nick2" placeholder="Nick 2" style="width:120px">
+                </div>
+                <div style="display:flex;gap:4px;margin-bottom:4px">
+                    <input class="menu-inputs" id="arbSkin" placeholder="3rb Skin" style="width:90px">
+                    <input class="menu-inputs" id="skin" placeholder="Skin URL 1" style="flex:1">
+                    <input class="menu-inputs" id="skin2" placeholder="Skin URL 2" style="width:120px">
+                </div>
+                <select class="menu-inputs" id="servers" style="width:100%;margin-bottom:4px"><option value="">Select Server ...</option></select>
+                <div style="display:flex;gap:4px">
+                    <button id="button-play" style="flex:1"><i class="fa fa-play fa-fw"></i> Play</button>
+                    <button id="button-spectate" style="flex:1"><i class="fa fa-expand fa-fw"></i> Spectate</button>
+                </div>
                 <div class="decorator" style="width: 100%;height: 86px;position: absolute;bottom: 0;left: 0;background-color: #222;border-radius: 0 0 2px 2px;z-index: -1;"></div>
             </div>
         </div>
@@ -1043,8 +1054,6 @@
             <div class="ps__scrollbar-x-rail" style="left: 0px; bottom: 0px;"><div class="ps__scrollbar-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__scrollbar-y-rail" style="top: 0px; right: 0px;"><div class="ps__scrollbar-y" tabindex="0" style="top: 0px; height: 0px;"></div></div></div>
         </div>
     </div>
-    <canvas id="canvas" width="987" height="617"></canvas>
-    <script type="text/javascript" src="https://patient-leaf-2f1a.maamargasouma.workers.dev/scripts/bundle.js"></script>
-    <script type="text/javascript" src="https://patient-leaf-2f1a.maamargasouma.workers.dev/scripts/patch.js"></script>
+    <script src="scripts/bundle.js"></script>
 </body>
 </html>
